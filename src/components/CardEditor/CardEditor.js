@@ -4,12 +4,17 @@ import './CardEditor.css';
 class CardEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { front: '', back: '' };
+    this.state = { front: '', back: '', no: false };
   }
 
   addCard = () => {
-    this.props.addCard(this.state);
-    this.setState({ front: '', back: '' });
+    if (this.state.front.trim() === '' || this.state.back.trim() === '') {
+      this.setState({...this.state, no: true})
+    } else {
+      this.props.addCard(this.state);
+      this.setState({ no: false, front: '', back: '' });
+
+    }
   };
 
   deleteCard = index => this.props.deleteCard(index);
@@ -59,6 +64,7 @@ class CardEditor extends React.Component {
         <button onClick={this.addCard}>Add card</button>
         <hr />
         <button onClick={this.props.switchMode}>Go to card viewer</button>
+        {this.state.no === true && (<b>NO EMPTY CARD >:(</b>)}
       </div>
     );
   }
